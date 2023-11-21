@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:le_mentor/pages/choix.dart';
+import 'package:le_mentor/pages/etudiant/connexion.dart';
 import 'package:le_mentor/pages/etudiant/nav_etudiant.dart';
+import 'package:le_mentor/pages/mentor/accueil.dart';
 import 'dart:async';
 import 'mentor/nav_mentor.dart';
 
@@ -23,7 +26,7 @@ class _SplashState extends State<Splash> {
           () =>
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (_) => const NavEtudiant(),
+              builder: (_) => const ChoixPage(),
             ),
           ),
     );

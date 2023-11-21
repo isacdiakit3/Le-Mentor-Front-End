@@ -12,6 +12,12 @@ class _InscriptionMentorState extends State<InscriptionMentor> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("fode kante"),
+          ],
+        )
 
       ),
     );
