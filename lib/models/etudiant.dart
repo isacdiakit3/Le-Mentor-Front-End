@@ -3,22 +3,22 @@
 import 'dart:convert';
 
 class Etudiant {
-  final int? id;
-  final String prenom;
-  final String nom;
-  final String ville;
-  final String email;
-  final String password;
-  final String photo;
+  int? id;
+  String? prenom;
+  String? nom;
+  String? ville;
+  String? email;
+  String? password;
+  String? photo;
 
   Etudiant({
-    required this.id,
-    required this.prenom,
-    required this.nom,
-    required this.ville,
-    required this.email,
-    required this.password,
-    required this.photo,
+    this.id,
+    this.prenom,
+    this.nom,
+    this.ville,
+    this.email,
+    this.password,
+    this.photo,
 });
 
   factory Etudiant.fromJson(Map<String , dynamic> json) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:le_mentor/models/mentor.dart';
 import 'package:le_mentor/pages/mentor/inscription.dart';
 import 'package:le_mentor/services/mentor_service.dart';
+import 'package:provider/provider.dart';
 
 
 class ConnexionMentor extends StatefulWidget {
@@ -31,6 +32,7 @@ class _ConnexionMentorState extends State<ConnexionMentor> {
       print(userData);
       MentorService mentorService = MentorService();
       Mentor? currentMentor = await mentorService.connexion(context, email, password);
+      Provider.of<MentorService>(context,listen: false).mentor=currentMentor!;
       if (currentMentor != null) {
         print(currentMentor);
         Navigator.pushNamed(context, '/navMentor');

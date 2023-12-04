@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:le_mentor/models/mentor.dart';
 import 'package:le_mentor/pages/mentor/mes_demandes.dart';
 import 'package:le_mentor/pages/mentor/mes_etudiants.dart';
 import 'package:le_mentor/pages/mentor/profil.dart';
+import 'package:le_mentor/services/mentor_service.dart';
 
 import 'accueil.dart';
 
 class NavMentor extends StatefulWidget {
-  const NavMentor({Key? key}) : super(key: key);
+  const NavMentor({Key? key,}) : super(key: key);
 
 
   @override
@@ -17,6 +19,7 @@ class NavMentor extends StatefulWidget {
 
 class _NavMentorState extends State<NavMentor> {
 
+  final MentorService mentorService = MentorService();
   int _currentIndex = 0;
 
   setCurrentIndex(int index){
@@ -129,13 +132,13 @@ class _NavMentorState extends State<NavMentor> {
               ],
             ),
             body: [
-              AccueilMentor(),
-              MesEtudiants(),
-              MesDemandes(),
+              AccueilMentor(mentor: mentorService.mentor ,),
+              MesEtudiants(mentor:mentorService.mentor ,),
+              MesDemandes(mentor: mentorService.mentor),
               ProfilMentor()
             ][_currentIndex],
+
             bottomNavigationBar: Container(
-              color: Colors.red,
               child: BottomNavigationBar(
                 type: BottomNavigationBarType.fixed,
                 currentIndex: _currentIndex,
@@ -172,8 +175,19 @@ class _NavMentorState extends State<NavMentor> {
                 ],
               ),
             ),
-        ),
+
+        )
     );
 
+
+
+
+  }
+  Widget drawer () {
+    return Container(
+      child: Column(
+
+      ),
+    );
   }
 }

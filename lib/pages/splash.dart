@@ -5,6 +5,7 @@ import 'package:le_mentor/pages/choix.dart';
 import 'package:le_mentor/pages/etudiant/connexion.dart';
 import 'package:le_mentor/pages/etudiant/nav_etudiant.dart';
 import 'package:le_mentor/pages/mentor/accueil.dart';
+import 'package:le_mentor/pages/mentor/form_classe.dart';
 import 'dart:async';
 import 'mentor/nav_mentor.dart';
 

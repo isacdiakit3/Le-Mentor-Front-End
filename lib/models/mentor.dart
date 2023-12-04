@@ -2,29 +2,29 @@
 
 class Mentor {
   final int? id;
-  final String prenom;
-  final String nom;
-  final String ville;
-  final String qualification;
-  final String diplome;
-  final String email;
-  final String password;
-  final String photo;
+  final String? prenom;
+  final String? nom;
+  final String? ville;
+  final String? qualification;
+  final String? diplome;
+  final String? email;
+  final String? password;
+  final String? photo;
   final int? certificat;
   final bool? approuvee;
 
   Mentor({
-    required this.id,
-    required this.prenom,
-    required this.nom,
-    required this.ville,
-    required this.qualification,
-    required this.diplome,
-    required this.email,
-    required this.password,
-    required this.photo,
-    required this.certificat,
-    required this.approuvee,
+    this.id,
+    this.prenom,
+    this.nom,
+    this.ville,
+    this.qualification,
+    this.diplome,
+    this.email,
+    this.password,
+    this.photo,
+    this.certificat,
+    this.approuvee,
 });
   factory Mentor.fromJson(Map<String , dynamic> json) {
     return Mentor(

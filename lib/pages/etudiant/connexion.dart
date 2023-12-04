@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:le_mentor/models/etudiant.dart';
 import 'package:le_mentor/pages/etudiant/inscription.dart';
 import 'package:le_mentor/services/etudiant_service.dart';
+import 'package:provider/provider.dart';
 
 class ConnexionEtudiant extends StatefulWidget {
   const ConnexionEtudiant({Key? key}) : super(key: key);
@@ -31,6 +32,7 @@ class _ConnexionEtudiantState extends State<ConnexionEtudiant> {
       print(userData);
       EtudiantService etudiantService = EtudiantService();
       Etudiant? currentEtudiant = await etudiantService.connexion(context,email, password);
+      Provider.of<EtudiantService>(context,listen: false).etudiant=currentEtudiant!;
       if (currentEtudiant != null) {
         print(currentEtudiant);
         Navigator.pushNamed(context, '/navEtudiant');

@@ -4,6 +4,9 @@ import 'package:le_mentor/pages/etudiant/home_etudiant.dart';
 import 'package:le_mentor/pages/etudiant/mentors.dart';
 import 'package:le_mentor/pages/etudiant/mes_mentors.dart';
 import 'package:le_mentor/pages/etudiant/profil.dart';
+import 'package:le_mentor/services/etudiant_service.dart';
+
+import '../../services/mentor_service.dart';
 
 class NavEtudiant extends StatefulWidget {
   const NavEtudiant({Key? key}) : super(key: key);
@@ -14,7 +17,7 @@ class NavEtudiant extends StatefulWidget {
 }
 
 class _NavEtudiantState extends State<NavEtudiant> {
-
+  final EtudiantService etudiantService = EtudiantService();
   int _currentIndex = 0;
 
   setCurrentIndex(int index){
@@ -127,7 +130,7 @@ class _NavEtudiantState extends State<NavEtudiant> {
           ],
         ),
         body: [
-          AccueilEtudiant(),
+          AccueilEtudiant(etudiant: etudiantService.etudiant,),
           Mentors(),
           MesMentors(),
           ProfilEtudiant()

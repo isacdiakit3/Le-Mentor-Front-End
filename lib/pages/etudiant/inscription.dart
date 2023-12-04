@@ -1,12 +1,13 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:http_parser/http_parser.dart';
 import 'package:le_mentor/models/etudiant.dart';
 import 'package:le_mentor/pages/etudiant/connexion.dart';
 import 'package:le_mentor/services/etudiant_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:le_mentor/services/image.dart';
+import 'package:image_picker/image_picker.dart';
+
+
+
 class InscriptionEtudiant extends StatefulWidget {
   const InscriptionEtudiant({Key? key}) : super(key: key);
 
@@ -22,6 +23,16 @@ class _InscriptionEtudiantState extends State<InscriptionEtudiant> with SingleTi
   TextEditingController passwordController = TextEditingController();
   TextEditingController passwordConfirmController = TextEditingController();
 
+  Widget image(){
+    return CircleAvatar(
+      backgroundColor: Color(0xFF365E7D),
+      foregroundColor: Colors.white,
+      radius: 30,
+      backgroundImage: selectedImage != null ? FileImage(selectedImage!) : null,
+      child: selectedImage == null ? Text("PHOTO") : null,
+    );
+  }
+
   String value = "";
   String prenom = "";
   String nom = "";
@@ -33,63 +44,9 @@ class _InscriptionEtudiantState extends State<InscriptionEtudiant> with SingleTi
   bool _obscureText = true;
   String imageBase64 = "";
 
-void validationForm() async {
+  void validationForm() async {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState?.save();
-
-
-
-      Navigator.pushNamed(context, '/connexionEtudiant');
-      debugPrint("ok");
-      Etudiant etudiant = Etudiant(
-          id: null,
-          prenom: prenom,
-          nom: nom,
-          ville: ville,
-          email: email,
-          password: password,
-          photo: "",
-      );
-      Map<String, dynamic> userData = {
-        "prenom": prenom,
-        "nom": nom,
-        "email": email,
-        "ville": ville,
-        "password": password,
-        "photo" : photo
-        // Ajoutez d'autres champs si nécessaire
-      };
-      EtudiantService etudiantService = EtudiantService();
-      await etudiantService.inscrire(etudiant);
-      // Envoi des données à votre API
-      var response =  await http.post(
-        Uri.parse(
-            'http://10.0.2.2:8080/etudiant/inscrire'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },// Remplacez ceci par l'URL de votre endpoint d'API
-        body: jsonEncode(userData),
-      );
-      if (response.statusCode == 200) {
-        // Succès : les données ont été envoyées avec succès à votre API
-        debugPrint("Données envoyées avec succès !");
-      } else {
-        // Échec : les données n'ont pas pu être envoyées à votre API
-        print(response.body);
-      }
-    } else {
-      debugPrint("Erreur : veuillez corriger les champs");
-    }
-  }
-  /* void validationForm() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      _formKey.currentState?.save();
-      List<int> imageBytes = await selectedImage!.readAsBytes();
-
-      if (selectedImage != null) {
-        List<int> imageBytes = await selectedImage!.readAsBytes();
-        imageBase64 = base64Encode(imageBytes);
-      }
 
       Navigator.pushNamed(context, '/connexionEtudiant');
       debugPrint("ok");
@@ -101,51 +58,22 @@ void validationForm() async {
         ville: ville,
         email: email,
         password: password,
-        photo: imageBase64,
+        photo: "", // Sera défini ci-dessous
       );
-
       Map<String, dynamic> userData = {
         "prenom": prenom,
         "nom": nom,
         "email": email,
         "ville": ville,
         "password": password,
-        "photo" : imageBase64,
         // Ajoutez d'autres champs si nécessaire
       };
-
       EtudiantService etudiantService = EtudiantService();
-      await etudiantService.inscrire(etudiant);
-
-      // Envoi des données à votre API avec une requête multipart/form-data
-      var uri = Uri.parse('http://10.0.2.2:8080/etudiant/inscrire');
-      var request = http.MultipartRequest('POST', uri)
-        ..fields.addAll(Map<String, String>.from(userData))
-        ..files.add(http.MultipartFile(
-            'image',
-            http.ByteStream.fromBytes(imageBytes),
-            imageBytes.length,
-            filename: 'user_image.jpg',
-            contentType: MediaType.parse('image/jpeg')
-        ));
-
-      try {
-        var response = await http.Response.fromStream(await request.send());
-        if (response.statusCode == 200) {
-          // Succès : les données ont été envoyées avec succès à votre API
-          debugPrint("Données envoyées avec succès !");
-        } else {
-          // Échec : les données n'ont pas pu être envoyées à votre API
-          print(response.body);
-        }
-      } catch (error) {
-        print('Erreur lors de l\'envoi de la requête : $error');
-      }
+      await etudiantService.inscrires(etudiant,selectedImage!);
     } else {
       debugPrint("Erreur : veuillez corriger les champs");
     }
-  }*/
-
+  }
 
   void affichage(nom) {
     setState(() {
@@ -166,6 +94,7 @@ void validationForm() async {
   @override
   Widget build(BuildContext context) {
     Color myColor = const Color(0xFF365E7D);
+    Color gold = const Color(0xFFEAFD0B);
     return MaterialApp(
       home: Scaffold(
         body: SingleChildScrollView(
@@ -177,25 +106,25 @@ void validationForm() async {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            GestureDetector(
-                            child: selectedImage == null
-                                ? Image.asset(
-                              "assets/images/Group_12.png",
-                              height: 150,
-                              width: 150,
-                            )
-                                : Image.file(
-                              selectedImage!,
-                              height: 150,
-                              width: 150,
+                            Container(
+                                width: 100,
+                                height: 100,
+                                margin: EdgeInsets.only(bottom: 10),
+                                child: image()
                             ),
-                            onTap: () async {
-                              selectedImage = await ImageCapture.pickImage();
-                              setState(
-                                      () {}); // Assurez-vous d'appeler setState pour déclencher le rebuild du widget
-                            },
-                          ),
-                            Text("Photo (Optionnel)"),
+                            ElevatedButton(
+                              onPressed: () async {
+                                XFile? pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                if (pickedImage != null) {
+                                  selectedImage = File(pickedImage.path);
+                                  setState(() {});
+                                }
+                              },
+                              child: Icon(
+                                Icons.image,color: (gold),
+                              ),
+                              style: ElevatedButton.styleFrom(backgroundColor: (myColor) ),
+                            ),
                             SizedBox(
                               height: 10,
                             ),

@@ -1,17 +1,20 @@
 
 
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:le_mentor/models/classe.dart';
+import 'package:path/path.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:le_mentor/models/mentor.dart';
 import 'package:http/http.dart' as http;
 import '../pages/constante.dart';
 
-class MentorService {
+class MentorService extends ChangeNotifier{
 
 
   static const baseMentorUrl = "$baseUrl/mentor";
+  Mentor mentor = Mentor();
 
   Future<List<Mentor>> lire() async {
     final response = await http.get(Uri.parse(baseMentorUrl));
@@ -27,6 +30,25 @@ class MentorService {
     return [];
   }
 
+  Future<List<Classe>> lires(int id) async {
+    final response = await http.get(Uri.parse("$baseMentorUrl/classeMentor/$id"));
+
+    if (response.statusCode == 200) {
+      print("__________________________________");
+      List<dynamic> list = jsonDecode(utf8.decode(response.bodyBytes));
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      List<Classe> classes = list.map((e) => Classe.fromJson(e)).toList();
+
+      print(classes);
+      /*for (var classe in responseData) {
+        classes.add(Classe.fromJson(classe));
+      }*/
+      return classes;
+    }else{
+      return [];
+    }
+  }
+
   Future<Mentor?> recherche(int id) async {
     final response = await http.get(Uri.parse('$baseMentorUrl/$id'));
 
@@ -38,7 +60,7 @@ class MentorService {
     return null;
   }
 
-  Future<Mentor?> inscrire(Mentor etudiant) async {
+  /* Future<Mentor?> inscrire(Mentor etudiant) async {
     final response = await http.post(
       Uri.parse(baseMentorUrl),
       body: json.encode(etudiant),
@@ -71,7 +93,7 @@ class MentorService {
       print("Unexpected Error");
     }
     return null;
-  }
+  }*/
 
   Future<Mentor?> connexion(BuildContext context ,String email, String password) async {
     try {
@@ -91,7 +113,8 @@ class MentorService {
         var responseData = json.decode(utf8.decode(response.bodyBytes));
         print(responseData);
         Mentor connexionMentor= Mentor.fromJson(responseData);
-        print(connexionMentor);
+        mentor = connexionMentor;
+        print(mentor.toJson());
         return connexionMentor;
       } else {
         throw Exception('Failed to log in: ${response.statusCode}');
@@ -104,6 +127,49 @@ class MentorService {
       );
       print('Error logging in: $error');
       throw error;
+    }
+  }
+
+  Future<Mentor> inscrires(Mentor mentor, File photo , File diplome) async {
+    var request = http.MultipartRequest('POST', Uri.parse("$baseMentorUrl/inscrires"));
+    request.files.add(http.MultipartFile(
+        'photo', photo.readAsBytes().asStream(), photo.lengthSync(),
+        filename: basename(photo.path)));
+    request.files.add(http.MultipartFile(
+      'diplome',
+      diplome.readAsBytes().asStream(),
+      diplome.lengthSync(),
+      filename: basename(diplome.path),
+    ));
+    request.fields['mentor'] = jsonEncode(mentor.toJson());
+    var response = await request.send();
+
+    var responsed = await http.Response.fromStream(response);
+    if (response.statusCode == 201) {
+      final responseData = json.decode(responsed.body);
+      debugPrint(responsed.body);
+      return Mentor.fromJson(responseData);
+    } else {
+      debugPrint(responsed.body);
+      throw Exception('Impossible d\'ajouter l\'utilisateur');
+    }
+  }
+
+  Future<List<Classe>> getClasse(int id) async {
+    final response = await http.get(Uri.parse("$baseMentorUrl/classe/$id"));
+    if (response.statusCode == 200) {
+      print("__________________________________");
+      List<dynamic> list = jsonDecode(utf8.decode(response.bodyBytes));
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      List<Classe> classes = list.map((e) => Classe.fromJson(e)).toList();
+
+      print(classes);
+      /*for (var classe in responseData) {
+        classes.add(Classe.fromJson(classe));
+      }*/
+      return classes;
+    } else {
+      return [];
     }
   }
 }

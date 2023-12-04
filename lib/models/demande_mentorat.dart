@@ -1,29 +1,41 @@
 
 
 import 'package:le_mentor/models/classe.dart';
+import 'package:le_mentor/models/etudiant.dart';
+import 'package:le_mentor/models/mentor.dart';
 
-class DemandeMentort{
-  final int? id;
-  final String status;
-  final DateTime dateTime;
+class DemandeMentorat{
+  int? id;
+  String? status;
+  String? dateTime;
+  Mentor? mentor;
+  Etudiant? etudiant;
 
-  DemandeMentort({
-   required this.id,
-   required this.status,
-   required this.dateTime
+
+  DemandeMentorat({
+   this.id,
+   this.status,
+   this.dateTime,
+   this.mentor,
+   this.etudiant
 });
 
-  factory DemandeMentort.fromJson(Map<String , dynamic> json){
-    return  DemandeMentort(
+  factory DemandeMentorat.fromJson(Map<String , dynamic> json){
+    return  DemandeMentorat(
         id: json["id"] ?? 0,
         status: json["status"] ?? "",
         dateTime: json["datetime"] ?? "",
+        mentor: Mentor.fromJson(json["mentor"]),
+        etudiant: Etudiant.fromJson(json["etudiant"])
     );
   }
 
   Map<String , dynamic> toJson() => {
     "id" : id,
     "status" : status,
-    "datetime" : dateTime
+    "datetime" : dateTime,
+    "mentor": mentor?.toJson(),
+    "etudiant": etudiant?.toJson(),
+
   };
 }
