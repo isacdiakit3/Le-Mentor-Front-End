@@ -20,7 +20,7 @@ class MentorService extends ChangeNotifier{
     final response = await http.get(Uri.parse(baseMentorUrl));
 
     if (response.statusCode == 200) {
-      var responseData = json.decode(response.body);
+      var responseData = jsonDecode(utf8.decode(response.bodyBytes));
       List<Mentor> mentors = [];
       for (var mentor in responseData) {
         mentors.add(Mentor.fromJson(mentor));
@@ -92,7 +92,7 @@ class MentorService extends ChangeNotifier{
     } else {
       print("Unexpected Error");
     }
-    return null;
+    return null
   }*/
 
   Future<Mentor?> connexion(BuildContext context ,String email, String password) async {
@@ -170,6 +170,31 @@ class MentorService extends ChangeNotifier{
       return classes;
     } else {
       return [];
+    }
+  }
+
+  Future<String> accepter(int id) async {
+    final response = await http.put(Uri.parse("$baseMentorUrl/accepter/$id"));
+
+    if (response.statusCode == 200) {
+      print("========================================================");
+
+      return utf8.decode(response.bodyBytes);
+    }else{
+      return "sans succes" ;
+    }
+
+
+  }
+
+  Future<String> refuser(int id) async {
+    final response = await http.put(Uri.parse("$baseMentorUrl/refuser/$id"));
+
+    if (response.statusCode == 200) {
+
+      return  utf8.decode(response.bodyBytes);
+    }else{
+      return "Sans succès";
     }
   }
 }

@@ -44,10 +44,13 @@ class MessageService extends ChangeNotifier{
       /*for (var classe in responseData) {
         classes.add(Classe.fromJson(classe));
       }*/
+
       return messages;
     }else{
       return [];
     }
   }
+
+
 
 }

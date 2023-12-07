@@ -179,6 +179,9 @@ class _AccueilEtudiantState extends State<AccueilEtudiant> {
                 print("${Provider.of<EtudiantService>(context, listen: false).etudiant.id}");
                 await demandeMentoratService.creerDemande(mentor.id!,Provider.of<EtudiantService>(context, listen: false).etudiant.id!,demandeMentorat);
                 onChange();
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Demande envoyée"))
+                );
               }
 
           },

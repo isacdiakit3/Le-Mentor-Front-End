@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:le_mentor/models/mentor.dart';
+import 'package:le_mentor/pages/constante.dart';
 import 'package:le_mentor/pages/mentor/mes_demandes.dart';
 import 'package:le_mentor/pages/mentor/mes_etudiants.dart';
 import 'package:le_mentor/pages/mentor/profil.dart';
 import 'package:le_mentor/services/mentor_service.dart';
+import 'package:provider/provider.dart';
 
 import 'accueil.dart';
 
@@ -60,77 +60,7 @@ class _NavMentorState extends State<NavMentor> {
 
             ),
 
-            drawer: ListView(padding: EdgeInsets.zero,
-
-              children: [
-                DrawerHeader(
-                    child:FractionallySizedBox(
-                      widthFactor: 0.7,
-                      child:Image.asset("assets/images/sideBar.jpg", fit: BoxFit.contain,),
-                    )
-                ),
-                Container(
-                  color: Colors.white,
-                  child: ListTile(
-                    title:Row(
-                      children:[
-                        Image.asset(
-                          "assets/images/home.jpg",
-                          width: 24,
-                          height: 24,
-                        ),
-                        SizedBox(width: 16,),
-                        Text("Acceuil"),
-                        SizedBox(width: 16,),
-                      ],
-                    ),
-                    onTap: (){
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: ListTile(
-                    title:Row(
-                      children:[
-                        Image.asset(
-                          "assets/images/home.jpg",
-                          width: 24,
-                          height: 24,
-                        ),
-                        SizedBox(width: 16,),
-                        Text("Acceuil", style: TextStyle(fontSize: 20),),
-                        SizedBox(width: 16,),
-                      ],
-                    ),
-                    onTap: (){
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: ListTile(
-                    title:Row(
-                      children:[
-                        Image.asset(
-                          "assets/images/home.jpg",
-                          width: 24,
-                          height: 24,
-                        ),
-                        SizedBox(width: 16,),
-                        Text("Acceuil"),
-                        SizedBox(width: 16,),
-                      ],
-                    ),
-                    onTap: (){
-                      Navigator.pop(context);
-                    },
-                  ),
-                ),
-              ],
-            ),
+            drawer: drawer(),
             body: [
               AccueilMentor(mentor: mentorService.mentor ,),
               MesEtudiants(mentor:mentorService.mentor ,),
@@ -185,8 +115,81 @@ class _NavMentorState extends State<NavMentor> {
   }
   Widget drawer () {
     return Container(
-      child: Column(
 
+      decoration: BoxDecoration(
+        color: Colors.white
+      ),
+      width: 340,
+      child: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+            ),
+            margin: EdgeInsets.only(bottom: 50),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Image.asset("assets/images/Group_12.png"),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  Text("Le MentOr" , style: TextStyle(color: (myColor) , fontSize: 40 , fontWeight:  FontWeight.bold),),
+                  SizedBox(
+                    height: 15,
+                  ),
+                ],
+              )
+          ),
+          GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => AccueilMentor(mentor: Provider.of<MentorService>(context , listen: false).mentor)));
+            },
+            child: Container(
+              child: Row(
+                children: [
+                  Container(
+                    width: 50,
+                    height: 50,
+                    margin: EdgeInsets.only(left: 10 , right: 40),
+                    child: Image.asset("assets/images/home.jpg"),
+                  ),
+                  Text("Accueil" , style: TextStyle(fontSize: 25),)
+                ],
+              ),
+            ),
+          ),
+          Container(
+            child: Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  margin: EdgeInsets.only(left: 10 , right: 40),
+                  child: Image.asset("assets/images/notification.jpg"),
+                ),
+                Text("Notification" , style: TextStyle(fontSize: 25),)
+              ],
+            ),
+          ),
+          Container(
+            child: Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  margin: EdgeInsets.only(left: 10 , right: 40),
+                  child: Image.asset("assets/images/Exitdoor.png"),
+                ),
+                Text("Deconnexion" , style: TextStyle(fontSize: 25),)
+              ],
+            ),
+          ),
+          
+        ],
       ),
     );
   }

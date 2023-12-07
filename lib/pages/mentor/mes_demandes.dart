@@ -41,15 +41,12 @@ class _MesDemandesState extends State<MesDemandes> {
                   return Text('Erreur : ${snapshot.error}');
                 }
                 print("${snapshot.data}");
-                return Expanded(
-
-                  child: ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return buildCardDemande(snapshot.data![index]);
-                    },
-                  ),
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return buildCardDemande(snapshot.data![index]);
+                  },
                 );
               },
             )
@@ -118,8 +115,9 @@ class _MesDemandesState extends State<MesDemandes> {
               ),
             ),
             ElevatedButton(
-                onPressed: (){
-
+                onPressed: () async{
+                 
+                          await MentorService().accepter(demandeMentorat.id!) ;
                 },
                 child: Text("Accepter" , style:  TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(backgroundColor: (myColor)),

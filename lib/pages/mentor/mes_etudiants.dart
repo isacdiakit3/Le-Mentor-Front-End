@@ -39,15 +39,12 @@ class _MesEtudiantsState extends State<MesEtudiants> {
                   return Text('Erreur : ${snapshot.error}');
                 }
                 print("${snapshot.data}");
-                return Expanded(
-
-                  child: ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return buildCardDemandeAccepte(snapshot.data![index]);
-                    },
-                  ),
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return buildCardDemandeAccepte(snapshot.data![index]);
+                  },
                 );
               },
             )

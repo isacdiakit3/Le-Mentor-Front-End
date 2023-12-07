@@ -171,7 +171,6 @@ class _EchangesMentorState extends State<EchangesMentor> {
               ),
             ),
             Text("${message.contenu}"),
-            message.pieceJointe!=null?Text("${message.pieceJointe!.length}"):Text(""),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [Text("${message.date}")]

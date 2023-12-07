@@ -56,7 +56,9 @@ class _AccueilMentorState extends State<AccueilMentor> {
                     return Expanded(
 
                       child: ListView.builder(
-                        reverse: true,
+                        reverse: false,
+
+                        scrollDirection: Axis.vertical,
                         itemCount: snapshot.data!.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
